@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,19 +8,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #7289da;
-            --accent: #00ff88;
+            --primary: #7289da; /* Discord Blurple */
+            --accent: #00ff88;  /* Cyber Green */
             --bg: #050505;
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Rajdhani', sans-serif;
             background-color: var(--bg);
@@ -35,80 +31,67 @@
         /* Animated Grid Background */
         .bg-grid {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 200%;
-            height: 200%;
-            background-image: linear-gradient(rgba(0, 255, 136, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px);
+            top: 0; left: 0; width: 200%; height: 200%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px);
             background-size: 50px 50px;
             transform: perspective(500px) rotateX(60deg);
-            animation: moveGrid 20s linear infinite;
+            animation: moveGrid 15s linear infinite;
             z-index: -1;
         }
 
         @keyframes moveGrid {
-            from {
-                transform: perspective(500px) rotateX(60deg) translateY(0);
-            }
-
-            to {
-                transform: perspective(500px) rotateX(60deg) translateY(50px);
-            }
+            from { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            to { transform: perspective(500px) rotateX(60deg) translateY(50px); }
         }
 
-        /* UI Elements */
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
         .container {
-            max-width: 600px;
+            max-width: 500px;
             width: 90%;
-            margin-top: 10vh;
+            margin-top: 8vh;
             text-align: center;
-            animation: fadeIn 1.5s ease-out;
+            animation: fadeIn 1s ease-out;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            letter-spacing: 5px;
+            font-size: clamp(2.5rem, 10vw, 4rem);
+            letter-spacing: 8px;
             margin-bottom: 0.5rem;
             background: linear-gradient(to bottom, #fff, var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(114, 137, 218, 0.4));
+            filter: drop-shadow(0 0 10px rgba(114, 137, 218, 0.5));
         }
 
         .card {
             background: var(--glass);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--border);
             padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 1rem;
         }
 
-            .card:hover {
-                border-color: var(--accent);
-                transform: scale(1.02);
-            }
+        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
 
         .btn {
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            padding: 1rem 2rem;
-            border-radius: 8px;
+            padding: 1.2rem;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: 700;
             text-transform: uppercase;
@@ -119,52 +102,51 @@
             width: 100%;
             justify-content: center;
             margin-top: 1rem;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
         }
 
-        .discord-btn {
-            background: var(--primary);
-            color: white;
-            margin-bottom: 2rem;
+        .discord-btn { 
+            background: var(--primary); 
+            color: white; 
+            margin-bottom: 1.5rem;
+            animation: float 4s ease-in-out infinite;
         }
+        .discord-btn:hover { background: #5b6eae; box-shadow: 0 0 30px rgba(114, 137, 218, 0.6); }
 
-            .discord-btn:hover {
-                background: #5b6eae;
-                box-shadow: 0 0 20px var(--primary);
-            }
-
-        .submit-btn {
-            background: var(--accent);
-            color: #000;
+        .submit-btn { 
+            background: linear-gradient(45deg, var(--accent), #00cc6a); 
+            color: #050505; 
         }
+        .submit-btn:hover { box-shadow: 0 0 30px rgba(0, 255, 136, 0.5); transform: scale(1.02); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-            .submit-btn:hover {
-                box-shadow: 0 0 20px var(--accent);
-                filter: brightness(1.1);
-            }
+        .input-group { margin-bottom: 1.5rem; text-align: left; }
+        label { 
+            display: block; 
+            font-size: 0.7rem; 
+            color: var(--accent); 
+            margin-bottom: 0.5rem; 
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
 
         input {
             width: 100%;
-            padding: 1rem;
-            background: rgba(0,0,0,0.4);
+            padding: 1.1rem;
+            background: rgba(255,255,255,0.03);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 10px;
             color: white;
-            margin-bottom: 1rem;
+            font-family: 'Rajdhani', sans-serif;
             font-size: 1rem;
             outline: none;
             transition: 0.3s;
         }
 
-            input:focus {
-                border-color: var(--primary);
-                background: rgba(0,0,0,0.6);
-            }
+        input:focus { border-color: var(--primary); background: rgba(255,255,255,0.07); }
 
-        #status {
-            margin-top: 1.5rem;
-            font-weight: bold;
-            min-height: 20px;
-        }
+        #status { margin-top: 1.5rem; font-weight: bold; font-size: 0.85rem; height: 20px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -172,18 +154,24 @@
 
     <div class="container">
         <h1>PROJECT PJ</h1>
-        <p style="color: var(--accent); margin-bottom: 2rem; letter-spacing: 2px;">SECURE LINKING PROTOCOL</p>
+        <p style="color: #888; margin-bottom: 2rem; letter-spacing: 3px; font-weight: 300;">V.2.06 SECURITY INTERFACE</p>
 
         <a href="https://discord.gg/YvAbSsEUfN" target="_blank" class="btn discord-btn">
             <i class="fab fa-discord"></i> Join Discord
         </a>
 
         <div class="card">
-            <h2 style="margin-bottom: 1.5rem; font-family: 'Orbitron';">LINK ACCOUNT</h2>
+            <h2 style="margin-bottom: 2rem; font-family: 'Orbitron'; letter-spacing: 2px;">AUTHORIZATION</h2>
             <form id="linkForm">
-                <input type="text" id="discord" placeholder="Discord Username (Gamer#0000)" required>
-                <input type="text" id="playfab" placeholder="PlayFab ID" required>
-                <button type="submit" class="btn submit-btn" id="btnText">Link Data</button>
+                <div class="input-group">
+                    <label>DISCORD IDENTITY</label>
+                    <input type="text" id="discord" placeholder="Username#0000" required>
+                </div>
+                <div class="input-group">
+                    <label>PLAYFAB KEY</label>
+                    <input type="text" id="playfab" placeholder="Your PlayFab ID" required>
+                </div>
+                <button type="submit" class="btn submit-btn" id="btnText">EXECUTE LINK</button>
             </form>
             <div id="status"></div>
         </div>
@@ -192,25 +180,25 @@
     <script>
         const form = document.getElementById('linkForm');
         const status = document.getElementById('status');
-
-        // IMPORTANT: The text below is a placeholder.
-        // GitHub Actions will replace it with your actual Webhook.
-        const HOOK = "REPLACE_WITH_WEBHOOK";
+        
+        // This is the magic placeholder. GitHub Actions will swap this for your secret.
+        const HOOK = "REPLACE_WITH_WEBHOOK"; 
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnText');
             btn.disabled = true;
-            btn.innerText = "LINKING...";
+            btn.innerText = "UPLOADING DATA...";
 
             const payload = {
                 embeds: [{
-                    title: "🔗 New Project PJ Link",
-                    color: 5814783,
+                    title: "🔒 New Authorization Request",
+                    color: 65280,
                     fields: [
-                        { name: "Discord", value: document.getElementById('discord').value, inline: true },
-                        { name: "PlayFab ID", value: document.getElementById('playfab').value, inline: true }
-                    ]
+                        { name: "Discord", value: "`" + document.getElementById('discord').value + "`", inline: true },
+                        { name: "PlayFab ID", value: "`" + document.getElementById('playfab').value + "`", inline: true }
+                    ],
+                    footer: { text: "PROJECT PJ | Linker System v2" }
                 }]
             };
 
@@ -221,17 +209,17 @@
                     body: JSON.stringify(payload)
                 });
 
-                if (res.ok) {
-                    status.innerText = "SUCCESS: CONNECTION ESTABLISHED";
+                if(res.ok) {
+                    status.innerText = "> Connection Established: Verified";
                     status.style.color = "var(--accent)";
                     form.reset();
                 } else { throw new Error(); }
-            } catch (err) { 
-                status.innerText = "ERROR: LINK FAILED";
+            } catch (err) {
+                status.innerText = "> System Error: Link Denied";
                 status.style.color = "#ff4444";
             } finally {
                 btn.disabled = false;
-                btn.innerText = "Link Data";
+                btn.innerText = "EXECUTE LINK";
             }
         });
     </script>
