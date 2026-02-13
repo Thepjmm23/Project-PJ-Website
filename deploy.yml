@@ -1,0 +1,20 @@
+name: Deploy Website
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Inject Discord Webhook
+        run: |
+          sed -i 's|REPLACE_WITH_WEBHOOK|${{ secrets.DISCORD_WEBHOOK }}|g' index.html
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: . # The folder where index.html is
+          branch: gh-pages # This creates a special branch for the live site
