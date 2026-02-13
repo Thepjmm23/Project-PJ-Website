@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECT PJ | Official Game Site</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.0"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #7289da;
+            --accent: #00ff88;
+            --bg-dark: #0a0a0c;
+            --bg-panel: #141418;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 10% 20%, rgba(114, 137, 218, 0.1) 0%, transparent 20%), radial-gradient(circle at 90% 80%, rgba(0, 255, 136, 0.05) 0%, transparent 20%);
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(114, 137, 218, 0.5);
+        }
+
+        .discord-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+            .discord-btn:hover {
+                background: #5b6eae;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(114, 137, 218, 0.4);
+            }
+
+        .hero {
+            padding: 4rem 5%;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .link-container {
+            background: var(--bg-panel);
+            max-width: 450px;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .info-box {
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid var(--accent);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: #ccffdd;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+            input:focus {
+                outline: none;
+                border-color: var(--primary);
+            }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            border: none;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+            .submit-btn:hover:not(:disabled) {
+                filter: brightness(1.2);
+            }
+
+            .submit-btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+        #statusMessage {
+            margin-top: 1.2rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .success {
+            color: var(--accent);
+        }
+
+        .error {
+            color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">PROJECT PJ</div>
+        <a href="https://discord.gg/YvAbSsEUfN" target="_blank" class="discord-btn">
+            <i class="fab fa-discord"></i> Join Discord
+        </a>
+    </header>
+
+    <div class="hero">
+        <h1>WELCOME TO THE SIMULATION</h1>
+        <p class="subtitle" contenteditable="true">
+            Project PJ is an immersive experience. Edit this text to describe your game.
+        </p>
+    </div>
+
+    <div class="link-container">
+        <h2>Link Account</h2>
+        <div class="info-box">
+            <i class="fas fa-shield-halved"></i>
+            Link your ID to get the <strong>@Linked</strong> role.
+        </div>
+
+        <form id="linkForm">
+            <div class="form-group">
+                <label>Discord Username</label>
+                <input type="text" id="discordUser" placeholder="e.g. Gamer#1234" required>
+            </div>
+            <div class="form-group">
+                <label>PlayFab ID</label>
+                <input type="text" id="playfabId" placeholder="Enter your ID" required>
+            </div>
+            <button type="submit" class="submit-btn" id="submitBtn">Submit Link</button>
+        </form>
+        <div id="statusMessage"></div>
+    </div>
+
+    <script>
+        // --- 1. Emergency Load Check ---
+        if (typeof Appwrite === 'undefined') {
+            document.body.innerHTML = "<div style='color:white; padding:50px; text-align:center;'><h2>Error: Appwrite library failed to load.</h2><p>Please check your internet connection or GitHub Pages settings.</p></div>";
+        }
+
+        // --- 2. Configuration ---
+        const client = new Appwrite.Client();
+        const PROJECT_ID = '698e6e35001dc95cca5e';
+        const FUNCTION_ID = '698e6fa600071dbf5d66';
+
+        client
+            .setEndpoint('https://cloud.appwrite.io/v1')
+            .setProject(PROJECT_ID);
+
+        const functions = new Appwrite.Functions(client);
+
+        // --- 3. Form Logic ---
+        const form = document.getElementById('linkForm');
+        const statusMsg = document.getElementById('statusMessage');
+        const btn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.innerText = "SENDING...";
+            statusMsg.className = '';
+            statusMsg.innerText = '';
+
+            const discordUser = document.getElementById('discordUser').value;
+            const playfabId = document.getElementById('playfabId').value;
+
+            try {
+                const execution = await functions.createExecution(
+                    FUNCTION_ID,
+                    JSON.stringify({ discordUser, playfabId })
+                );
+
+                // Parse the response from your backend function
+                const result = JSON.parse(execution.responseBody);
+
+                if (result.success) {
+                    statusMsg.innerText = "LINKED! Check Discord for your role.";
+                    statusMsg.className = "success";
+                    form.reset();
+                } else {
+                    throw new Error(result.message || "Execution failed.");
+                }
+            } catch (error) {
+                console.error("Link Error:", error);
+                statusMsg.innerText = "System Busy. Please try again later.";
+                statusMsg.className = "error";
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "SUBMIT LINK";
+            }
+        });
+    </script>
+</body>
+</html>
