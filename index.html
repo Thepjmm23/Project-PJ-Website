@@ -56,9 +56,9 @@
             height: 100vh;
             z-index: -1;
             overflow: hidden;
-            pointer-events: none; /* Allows clicking through empty space */
-            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-            -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+            pointer-events: none; 
+            mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
         }
         .side-gallery.left { left: 2vw; }
         .side-gallery.right { right: 2vw; }
@@ -66,9 +66,9 @@
         .gallery-track {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
             padding: 20px 0;
-            pointer-events: auto; /* Re-enable pointer for images */
+            pointer-events: auto; 
         }
 
         /* Animations for seamless scrolling */
@@ -84,22 +84,21 @@
             100% { transform: translateY(0); }
         }
 
+        /* Upgraded Image Styling */
         .gallery-track img {
             width: 100%;
             border-radius: 12px;
-            border: 1px solid var(--border);
+            border: 2px solid rgba(0, 255, 136, 0.15); /* Subtle neon border */
             object-fit: cover;
-            opacity: 0.4;
-            transition: all 0.4s ease;
-            filter: grayscale(80%);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            opacity: 0.85; /* Full color, slightly transparent to blend with bg */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy animation */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6), 0 0 10px rgba(0, 255, 136, 0.1);
         }
         .gallery-track img:hover {
             opacity: 1;
-            filter: grayscale(0%);
-            transform: scale(1.05);
+            transform: scale(1.08) rotate(2deg); /* Dynamic pop-out effect */
             border-color: var(--accent);
-            box-shadow: 0 0 20px var(--accent-glow);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 25px var(--accent-glow);
             z-index: 10;
         }
 
@@ -315,7 +314,6 @@
         // ==========================================
         // 🖼️ IMAGE GALLERY CONFIGURATION
         // ==========================================
-        // Add all your image filenames here.
         const IMAGE_LIST = [
             'images/ProjectPJ1.png',
             'images/ProjectPJ3.png',
