@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROJECT PJ | The Link</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #7289da; /* Discord Blurple */
-            --accent: #00ff88;  /* Cyber Green */
-            --bg: #050505;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
+            --primary: #5865F2; /* Updated Discord Color */
+            --primary-hover: #4752C4;
+            --accent: #00ff88;
+            --accent-glow: rgba(0, 255, 136, 0.4);
+            --bg: #09090b;
+            --surface: rgba(24, 24, 27, 0.6);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,158 +24,191 @@
         body {
             font-family: 'Rajdhani', sans-serif;
             background-color: var(--bg);
-            color: white;
+            color: var(--text-main);
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
         }
 
-        /* Animated Grid Background */
+        /* Ambient Background Glow */
+        .bg-glow {
+            position: fixed;
+            top: 50%; left: 50%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(88,101,242,0.15) 0%, rgba(0,0,0,0) 70%);
+            transform: translate(-50%, -50%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Subtle Grid */
         .bg-grid {
             position: fixed;
-            top: 0; left: 0; width: 200%; height: 200%;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: 
-                linear-gradient(rgba(0, 255, 136, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: perspective(500px) rotateX(60deg);
-            animation: moveGrid 15s linear infinite;
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
             z-index: -1;
-        }
-
-        @keyframes moveGrid {
-            from { transform: perspective(500px) rotateX(60deg) translateY(0); }
-            to { transform: perspective(500px) rotateX(60deg) translateY(50px); }
-        }
-
-        /* Floating Animation */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            opacity: 0.3;
         }
 
         .container {
-            max-width: 500px;
+            max-width: 480px;
             width: 90%;
-            margin-top: 8vh;
             text-align: center;
-            animation: fadeIn 1s ease-out;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 10vw, 4rem);
-            letter-spacing: 8px;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(to bottom, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(114, 137, 218, 0.5));
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            letter-spacing: 6px;
+            margin-bottom: 0.2rem;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        .subtitle {
+            color: var(--accent);
+            letter-spacing: 4px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 2.5rem;
+            text-transform: uppercase;
         }
 
         .card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border);
-            padding: 2.5rem;
-            border-radius: 24px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-top: 1rem;
-        }
-
-        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 1.2rem;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-family: 'Orbitron', sans-serif;
-            cursor: pointer;
-            transition: 0.3s;
-            border: none;
-            width: 100%;
-            justify-content: center;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
 
         .discord-btn { 
             background: var(--primary); 
             color: white; 
-            margin-bottom: 1.5rem;
-            animation: float 4s ease-in-out infinite;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(88, 101, 242, 0.25);
         }
-        .discord-btn:hover { background: #5b6eae; box-shadow: 0 0 30px rgba(114, 137, 218, 0.6); }
+        .discord-btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
 
-        .submit-btn { 
-            background: linear-gradient(45deg, var(--accent), #00cc6a); 
-            color: #050505; 
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            width: 100%;
+            font-size: 0.95rem;
+            letter-spacing: 1.5px;
         }
-        .submit-btn:hover { box-shadow: 0 0 30px rgba(0, 255, 136, 0.5); transform: scale(1.02); }
-        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .input-group { margin-bottom: 1.5rem; text-align: left; }
+        
         label { 
             display: block; 
-            font-size: 0.7rem; 
-            color: var(--accent); 
+            font-size: 0.75rem; 
+            color: var(--text-muted); 
             margin-bottom: 0.5rem; 
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         input {
             width: 100%;
-            padding: 1.1rem;
-            background: rgba(255,255,255,0.03);
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 8px;
             color: white;
             font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
 
-        input:focus { border-color: var(--primary); background: rgba(255,255,255,0.07); }
+        input:focus { 
+            border-color: var(--accent); 
+            box-shadow: 0 0 15px var(--accent-glow);
+            background: rgba(0, 0, 0, 0.6);
+        }
 
-        #status { margin-top: 1.5rem; font-weight: bold; font-size: 0.85rem; height: 20px; text-transform: uppercase; }
+        .submit-btn { 
+            background: var(--accent); 
+            color: #000; 
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover:not(:disabled) { 
+            box-shadow: 0 0 20px var(--accent-glow); 
+            transform: translateY(-2px); 
+        }
+        
+        .submit-btn:disabled { 
+            opacity: 0.6; 
+            cursor: not-allowed; 
+            transform: none;
+        }
+
+        #status { 
+            margin-top: 1.5rem; 
+            font-weight: 700; 
+            font-size: 0.9rem; 
+            min-height: 24px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
     </style>
 </head>
 <body>
+    <div class="bg-glow"></div>
     <div class="bg-grid"></div>
 
     <div class="container">
         <h1>PROJECT PJ</h1>
-        <p style="color: #888; margin-bottom: 2rem; letter-spacing: 3px; font-weight: 300;">V.2.06 SECURITY INTERFACE</p>
-
-        <a href="https://discord.gg/YvAbSsEUfN" target="_blank" class="btn discord-btn">
-            <i class="fab fa-discord"></i> Join Discord
-        </a>
+        <div class="subtitle">Security Interface V.2.06</div>
 
         <div class="card">
-            <h2 style="margin-bottom: 2rem; font-family: 'Orbitron'; letter-spacing: 2px;">AUTHORIZATION</h2>
+            <a href="https://discord.gg/YvAbSsEUfN" target="_blank" class="btn discord-btn">
+                <i class="fab fa-discord"></i> Connect Identity
+            </a>
+
             <form id="linkForm">
                 <div class="input-group">
-                    <label>DISCORD IDENTITY</label>
-                    <input type="text" id="discord" placeholder="Username#0000" required>
+                    <label>Discord Tag</label>
+                    <input type="text" id="discord" placeholder="Username#0000 or @username" required autocomplete="off">
                 </div>
                 <div class="input-group">
-                    <label>PLAYFAB KEY</label>
-                    <input type="text" id="playfab" placeholder="Your PlayFab ID" required>
+                    <label>PlayFab Key</label>
+                    <input type="text" id="playfab" placeholder="Enter PlayFab ID" required autocomplete="off">
                 </div>
-                <button type="submit" class="btn submit-btn" id="btnText">EXECUTE LINK</button>
+                <button type="submit" class="btn submit-btn" id="btnText">
+                    <i class="fas fa-link"></i> Execute Link
+                </button>
             </form>
             <div id="status"></div>
         </div>
@@ -180,25 +217,32 @@
     <script>
         const form = document.getElementById('linkForm');
         const status = document.getElementById('status');
+        const btn = document.getElementById('btnText');
         
-        // This is the magic placeholder. GitHub Actions will swap this for your secret.
+        // Target Webhook (Replaced by GitHub Actions)
         const HOOK = "REPLACE_WITH_WEBHOOK"; 
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btnText');
+            
+            // UI Loading State
             btn.disabled = true;
-            btn.innerText = "UPLOADING DATA...";
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Transmitting...';
+            status.innerText = "";
+
+            const discordVal = document.getElementById('discord').value.trim();
+            const playfabVal = document.getElementById('playfab').value.trim();
 
             const payload = {
                 embeds: [{
                     title: "🔒 New Authorization Request",
-                    color: 65280,
+                    color: 65280, // Hex #00FF00
                     fields: [
-                        { name: "Discord", value: "`" + document.getElementById('discord').value + "`", inline: true },
-                        { name: "PlayFab ID", value: "`" + document.getElementById('playfab').value + "`", inline: true }
+                        { name: "Discord", value: "`" + discordVal + "`", inline: true },
+                        { name: "PlayFab ID", value: "`" + playfabVal + "`", inline: true }
                     ],
-                    footer: { text: "PROJECT PJ | Linker System v2" }
+                    timestamp: new Date().toISOString(),
+                    footer: { text: "PROJECT PJ | Secure Linker" }
                 }]
             };
 
@@ -210,16 +254,20 @@
                 });
 
                 if(res.ok) {
-                    status.innerText = "> Connection Established: Verified";
+                    status.innerText = "✓ Connection Established";
                     status.style.color = "var(--accent)";
                     form.reset();
-                } else { throw new Error(); }
+                } else { 
+                    throw new Error(`HTTP Error: ${res.status}`); 
+                }
             } catch (err) {
-                status.innerText = "> System Error: Link Denied";
+                console.error(err);
+                status.innerText = "✗ System Error: Link Denied";
                 status.style.color = "#ff4444";
             } finally {
+                // Reset UI
                 btn.disabled = false;
-                btn.innerText = "EXECUTE LINK";
+                btn.innerHTML = '<i class="fas fa-link"></i> Execute Link';
             }
         });
     </script>
