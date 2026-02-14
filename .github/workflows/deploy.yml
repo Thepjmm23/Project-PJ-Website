@@ -1,20 +1,30 @@
-name: Secure Deploy
+name: Inject Webhook and Deploy
+
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Inject Secret Webhook
+      - name: Inject Discord Webhook Secret
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          sed -i 's|REPLACE_WITH_WEBHOOK|${{ secrets.DISCORD_WEBHOOK }}|g' index.html
+          # Replaces the placeholder in index.html with the actual secret
+          sed -i "s|REPLACE_WITH_WEBHOOK|$WEBHOOK_URL|g" index.html
 
-      - name: Deploy to Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      # Add your deployment steps below (e.g., GitHub Pages)
+      - name: Upload artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v2
         with:
-          folder: .
-          branch: gh-pages
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
