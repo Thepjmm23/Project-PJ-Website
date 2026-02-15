@@ -2,7 +2,7 @@ name: Secure Deploy
 on:
   push:
     branches: [ main ]
-  workflow_dispatch: # This allows you to manually trigger a deploy if needed
+  workflow_dispatch:
 
 permissions:
   contents: write
