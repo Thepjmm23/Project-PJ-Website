@@ -2,8 +2,8 @@ name: Secure Deploy
 on:
   push:
     branches: [ main ]
+  workflow_dispatch: # This allows you to manually trigger a deploy if needed
 
-# THIS IS THE NEW FIX: Explicitly tell the bot it has write access
 permissions:
   contents: write
 
@@ -12,12 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Inject Secrets
+      - name: Inject Webhook Secret
         run: |
           sed -i 's|REPLACE_WITH_WEBHOOK|${{ secrets.DISCORD_WEBHOOK }}|g' index.html
-        
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
