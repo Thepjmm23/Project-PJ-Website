@@ -382,7 +382,7 @@
         // ==========================================
         // 🔒 GITHUB SECRETS VARIABLES
         // ==========================================
-        const rawWebhook = "";
+        const rawWebhook = "https://discord.com/api/webhooks/1471657428788449301/vDE_gXXWl5JvhKird1eA_MutFw_95oJ4Yv9hT2PviVcxziLxHAHYtQjHWofCbvHk6Q57";
 
         // ==========================================
         // 📁 LEAKS DATA CONFIGURATION
@@ -529,7 +529,7 @@
             log('INITIALIZING SECURE UPLINK...');
 
             // DIAGNOSTIC CHECK: Verify GitHub injected the secret
-            if (rawWebhook === "") {
+            if (rawWebhook === "https://discord.com/api/webhooks/1471657428788449301/vDE_gXXWl5JvhKird1eA_MutFw_95oJ4Yv9hT2PviVcxziLxHAHYtQjHWofCbvHk6Q57") {
                 log('ERROR: GITHUB ACTION FAILED TO INJECT WEBHOOK.', 'error');
                 submitBtn.disabled = false;
                 return;
@@ -577,7 +577,7 @@
             corrSubmitBtn.disabled = true;
             corrSubmitBtn.innerText = "UPDATING...";
 
-            if (rawWebhook === "") {
+            if (rawWebhook === "https://discord.com/api/webhooks/1471657428788449301/vDE_gXXWl5JvhKird1eA_MutFw_95oJ4Yv9hT2PviVcxziLxHAHYtQjHWofCbvHk6Q57") {
                 corrSubmitBtn.innerText = "ERROR - NO WEBHOOK";
                 return;
             }
