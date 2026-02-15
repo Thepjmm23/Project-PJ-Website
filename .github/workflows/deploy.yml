@@ -17,7 +17,7 @@ jobs:
       - name: Inject Secrets
         run: |
           sed -i 's|REPLACE_WITH_WEBHOOK|${{ secrets.DISCORD_WEBHOOK }}|g' index.html
-          sed -i 's|REPLACE_TITLE_ID|${{ secrets.PLAYFAB_TITLE_ID }}|g' index.html
+        
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
