@@ -99,7 +99,7 @@
         .container-wrapper {
             position: relative; z-index: 10; width: 100%;
             display: flex; justify-content: center;
-            margin-top: 100px;
+            margin-top: 100px; 
             padding-bottom: 50px;
         }
 
@@ -109,7 +109,7 @@
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
         
-        #leaksView { max-width: 800px; } 
+        #leaksView { max-width: 900px; } 
 
         .view-container.active { display: block; opacity: 1; transform: translateY(0); }
 
@@ -131,49 +131,70 @@
             box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
 
-        /* --- Leaks Grid System (Square Panels) --- */
+        /* --- UPGRADED Leaks Grid System --- */
         .leaks-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;
         }
+        
         .leak-card {
-            background: rgba(0,0,0,0.6); border: 1px solid var(--border);
-            border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s;
-            aspect-ratio: 1 / 1; /* Forces the card into a perfect square */
+            background: rgba(15, 15, 20, 0.6); border: 1px solid var(--border);
+            border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px);
         }
+        
         .leak-card:hover {
-            border-color: var(--accent); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); transform: translateY(-5px);
+            border-color: var(--accent); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.3); 
+            transform: translateY(-8px) scale(1.02);
         }
         
-        /* Container holding the media/text/link to fill the space above the title */
         .leak-content-wrapper {
-            flex-grow: 1; width: 100%; overflow: hidden; position: relative; background: #0a0a0a;
+            flex-grow: 1; width: 100%; overflow: hidden; position: relative; 
+            background: #000; min-height: 220px; display: flex;
         }
         
-        /* 1. Image & Video Styling */
-        .leak-media { width: 100%; height: 100%; object-fit: cover; }
+        /* Image & Video Animation */
+        .leak-media { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .leak-card:hover .leak-media { transform: scale(1.1); }
         
-        /* 2. Text Styling */
+        /* Text Leak Styling */
         .leak-text-content {
-            width: 100%; height: 100%; padding: 1.5rem; display: flex; 
+            width: 100%; height: 100%; padding: 2rem; display: flex; flex-direction: column;
             align-items: center; justify-content: center; text-align: center; 
-            font-size: 0.95rem; line-height: 1.4; color: #ddd; overflow-y: auto;
+            font-size: 1.1rem; line-height: 1.5; color: #fff;
+            background: radial-gradient(circle at center, rgba(0,255,136,0.1) 0%, transparent 70%);
         }
 
-        /* 3. Link Styling */
+        /* Link/Standard Block */
         .leak-link-content {
             width: 100%; height: 100%; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; text-decoration: none; 
             color: var(--accent); font-family: 'Orbitron', sans-serif; transition: 0.3s;
-            background: rgba(0, 255, 136, 0.05);
+            background: rgba(0, 255, 136, 0.05); font-weight: bold; font-size: 1.2rem;
         }
-        .leak-link-content:hover { background: rgba(0, 255, 136, 0.15); text-shadow: 0 0 10px var(--accent-glow); }
-        .leak-link-content i { font-size: 2.5rem; margin-bottom: 10px; }
+        .leak-link-content:hover { background: rgba(0, 255, 136, 0.15); text-shadow: 0 0 15px var(--accent-glow); }
+        .leak-link-content i { font-size: 3rem; margin-bottom: 15px; }
 
-        /* Title block at the bottom of the square */
+        /* Discord Special Leak Panel */
+        .leak-discord-wrapper {
+            width: 100%; height: 100%; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; background: rgba(88, 101, 242, 0.1);
+            padding: 2rem; text-align: center;
+        }
+        .leak-discord-btn {
+            background: var(--primary); color: white; padding: 1rem 1.5rem; border-radius: 8px;
+            text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: bold;
+            margin-top: 15px; transition: 0.3s; box-shadow: 0 0 15px rgba(88, 101, 242, 0.5);
+            display: inline-flex; align-items: center; gap: 10px; text-transform: uppercase;
+        }
+        .leak-discord-btn:hover { background: var(--primary-hover); transform: scale(1.05); box-shadow: 0 0 25px rgba(88, 101, 242, 0.8); }
+
+        /* Cinematic Title Bar */
         .leak-title {
-            padding: 0 1rem; text-align: center; font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem; letter-spacing: 1px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.8);
-            height: 45px; display: flex; align-items: center; justify-content: center;
+            padding: 1.2rem 1rem; text-align: center; font-family: 'Orbitron', sans-serif; font-weight: 700;
+            font-size: 0.9rem; letter-spacing: 2px; border-top: 1px solid rgba(255,255,255,0.05); 
+            background: linear-gradient(to right, transparent, rgba(0,255,136,0.1), transparent);
+            text-transform: uppercase;
         }
 
         /* Buttons */
@@ -366,12 +387,11 @@
         // ==========================================
         // 📁 LEAKS DATA CONFIGURATION
         // ==========================================
-        // Types available: 'image', 'video', 'text', 'link'
+        // Types available: 'image', 'video', 'text', 'link', 'discord'
         const LEAKS_DATA = [
-         //   { type: 'image', url: 'images/ProjectPJ1.png', title: 'MAP PREVIEW' },
-           { type: 'text', content: 'https://discord.gg/YvAbSsEUfN', title: 'Join the discord to get more leaks!' },
-          //  { type: 'link', url: 'https://test.com', title: 'WATCH TRAILER' },
-          //  { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4', title: 'test' }
+            { type: 'image', url: 'images/ProjectPJ1.png', title: 'MAP PREVIEW' },
+            { type: 'text', content: 'V3 is dropping next week! We are adding 5 new cosmetics and fixing walls.', title: 'DEV UPDATE' },
+            { type: 'discord', url: 'https://discord.gg/YvAbSsEUfN', text: 'Want to see the rest of the exclusive leaks?', btnText: 'JOIN DISCORD', title: 'SECRET LEAKS' }
         ];
 
         function loadLeaks() {
@@ -396,6 +416,12 @@
                                         <i class="fas fa-external-link-alt"></i>
                                         <span>CLICK TO OPEN</span>
                                     </a>`;
+                } else if (leak.type === 'discord') {
+                    mediaElement = `<div class="leak-discord-wrapper">
+                                        <i class="fab fa-discord" style="font-size: 3rem; color: var(--primary); margin-bottom: 15px; text-shadow: 0 0 20px rgba(88, 101, 242, 0.5);"></i>
+                                        <p style="color: #ddd; font-family: 'Rajdhani'; font-size: 1.1rem;">${leak.text}</p>
+                                        <a href="${leak.url}" target="_blank" class="leak-discord-btn"><i class="fab fa-discord"></i> ${leak.btnText}</a>
+                                    </div>`;
                 }
 
                 html += `
@@ -452,7 +478,6 @@
             }, 400);
         }
 
-        // Navigation tab handler
         function switchNav(targetId, btnId) {
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(btnId).classList.add('active');
