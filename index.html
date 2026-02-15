@@ -34,37 +34,23 @@
             overflow-x: hidden; 
         }
 
-        /* --- Top Navigation --- */
+        /* --- Top Navigation Bar --- */
         .top-nav {
-            position: fixed;
-            top: 0; left: 0; width: 100%;
+            position: fixed; top: 0; left: 0; width: 100%;
             background: rgba(0, 0, 0, 0.8);
             border-bottom: 1px solid var(--border);
-            padding: 1rem;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            padding: 1rem; display: flex; justify-content: center; gap: 2rem;
+            z-index: 100; backdrop-filter: blur(10px);
         }
 
         .nav-btn {
-            background: transparent;
-            border: none;
-            color: #888;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: 0.3s;
+            background: transparent; border: none; color: #888;
+            font-family: 'Orbitron', sans-serif; font-size: 1.1rem;
+            font-weight: 700; letter-spacing: 2px; cursor: pointer; transition: 0.3s;
         }
 
         .nav-btn:hover { color: #fff; }
-        .nav-btn.active {
-            color: var(--accent);
-            text-shadow: 0 0 15px var(--accent-glow);
-        }
+        .nav-btn.active { color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
 
         /* Backgrounds */
         .bg-grid {
@@ -91,29 +77,20 @@
         .side-gallery.left { left: 2vw; }
         .side-gallery.right { right: 2vw; }
 
-        .gallery-track {
-            display: flex; flex-direction: column; gap: 25px;
-            padding: 20px 0; pointer-events: auto; 
-        }
-
+        .gallery-track { display: flex; flex-direction: column; gap: 25px; padding: 20px 0; pointer-events: auto; }
         .scroll-up { animation: scrollUp 30s linear infinite; }
         .scroll-down { animation: scrollDown 30s linear infinite; }
-
         @keyframes scrollUp { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
         @keyframes scrollDown { 0% { transform: translateY(-50%); } 100% { transform: translateY(0); } }
 
         .gallery-track img {
-            width: 100%; border-radius: 12px;
-            border: 2px solid rgba(0, 255, 136, 0.15); 
-            object-fit: cover; opacity: 0.85; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            width: 100%; border-radius: 12px; border: 2px solid rgba(0, 255, 136, 0.15); 
+            object-fit: cover; opacity: 0.85; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             box-shadow: 0 10px 20px rgba(0,0,0,0.6), 0 0 10px rgba(0, 255, 136, 0.1);
         }
         .gallery-track img:hover {
-            opacity: 1; transform: scale(1.08) rotate(2deg); 
-            border-color: var(--accent);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 25px var(--accent-glow);
-            z-index: 10;
+            opacity: 1; transform: scale(1.08) rotate(2deg); border-color: var(--accent);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 25px var(--accent-glow); z-index: 10;
         }
 
         @media (max-width: 900px) { .side-gallery { display: none; } }
@@ -122,7 +99,7 @@
         .container-wrapper {
             position: relative; z-index: 10; width: 100%;
             display: flex; justify-content: center;
-            margin-top: 100px; /* Offset for navbar */
+            margin-top: 100px; /* Offset to prevent overlap with navbar */
             padding-bottom: 50px;
         }
 
@@ -132,8 +109,7 @@
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
         
-        /* The Leaks view needs more width for the grid */
-        #leaksView { max-width: 900px; }
+        #leaksView { max-width: 800px; } /* Wider container for the leaks grid */
 
         .view-container.active { display: block; opacity: 1; transform: translateY(0); }
 
@@ -157,42 +133,19 @@
 
         /* --- Leaks Grid System --- */
         .leaks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;
         }
-
         .leak-card {
-            background: rgba(0,0,0,0.6);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: 0.3s;
+            background: rgba(0,0,0,0.6); border: 1px solid var(--border);
+            border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s;
         }
-
         .leak-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-            transform: translateY(-5px);
+            border-color: var(--accent); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); transform: translateY(-5px);
         }
-
-        .leak-media {
-            width: 100%;
-            height: 200px; /* Fixed height so everything aligns perfectly */
-            object-fit: cover; /* Auto-crops images/videos to fit the box cleanly */
-            background: #000;
-        }
-
+        .leak-media { width: 100%; height: 200px; object-fit: cover; background: #000; }
         .leak-title {
-            padding: 1rem;
-            text-align: center;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            border-top: 1px solid var(--border);
-            background: rgba(0,0,0,0.8);
+            padding: 1rem; text-align: center; font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem; letter-spacing: 1px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.8);
         }
 
         /* Buttons */
@@ -202,21 +155,16 @@
             text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s;
             width: 100%; font-family: 'Orbitron', sans-serif; cursor: pointer; border: none;
         }
-        
         .btn-download {
             background: var(--primary); color: white; margin-bottom: 1rem;
-            box-shadow: 0 0 15px rgba(88, 101, 242, 0.4);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 15px rgba(88, 101, 242, 0.4); animation: pulse 2s infinite;
         }
         .btn-download:hover { background: var(--primary-hover); transform: scale(1.02); animation: none; box-shadow: 0 0 25px rgba(88, 101, 242, 0.8);}
-        
         .btn-link-nav { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
         .btn-link-nav:hover { background: rgba(0, 255, 136, 0.1); box-shadow: 0 0 15px var(--accent-glow); }
-
         .btn-submit { background: var(--accent); color: #000; margin-top: 10px; }
         .btn-submit:hover:not(:disabled) { box-shadow: 0 0 15px var(--accent-glow); transform: translateY(-2px); }
         .btn-submit:disabled { background: #333; color: #666; cursor: not-allowed; }
-
         .btn-back { background: transparent; color: #888; border: 1px solid #333; margin-bottom: 1.5rem; font-size: 0.8rem; }
         .btn-back:hover { color: #fff; border-color: #666; }
         .btn-warning { background: var(--warning); color: #000; margin-top: 15px; font-size: 0.85rem; }
@@ -227,8 +175,7 @@
         input {
             width: 100%; padding: 12px; background: rgba(0,0,0,0.5);
             border: 1px solid var(--border); border-radius: 6px;
-            color: #fff; font-family: 'Orbitron', sans-serif; font-size: 0.9rem;
-            transition: 0.3s; outline: none;
+            color: #fff; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; transition: 0.3s; outline: none;
         }
         input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
 
@@ -329,7 +276,7 @@
 
             <div class="card">
                 <button class="btn btn-back" onclick="switchView('landingView')">
-                    <i class="fas fa-arrow-left"></i> Return
+                    <i class="fas fa-arrow-left"></i> Return to Main page
                 </button>
 
                 <div id="mainFormContainer">
@@ -390,13 +337,15 @@
 
         // ==========================================
         // 📁 LEAKS DATA CONFIGURATION
-        // Add new leaks here. Set type to 'image' or 'video'.
         // ==========================================
+        // To add a new leak, create a new line inside the brackets below.
+        // Set type to 'image' or 'video'.
         const LEAKS_DATA = [
             { type: 'image', url: 'images/ProjectPJ1.png', title: 'NEW MAP PREVIEW' },
-            { type: 'image', url: 'images/ProjectPJ3.png', title: 'UPCOMING COSMETICS' },
-            /* Add videos like this: 
-            { type: 'video', url: 'videos/modmenu.mp4', title: 'V2 MOD MENU' }, */
+            { type: 'image', url: 'images/ProjectPJ3.png', title: 'UPCOMING COSMETICS' }
+            /* Example for adding a video:
+            { type: 'video', url: 'videos/modmenu.mp4', title: 'V2 MOD MENU' }
+            */
         ];
 
         function loadLeaks() {
@@ -440,8 +389,10 @@
             const leftTrack = document.getElementById('galleryLeft');
             const rightTrack = document.getElementById('galleryRight');
             if (IMAGE_LIST.length === 0) return;
+
             let imageHTML = '';
             IMAGE_LIST.forEach(src => { imageHTML += `<img src="${src}" alt="Game Image">`; });
+
             leftTrack.innerHTML = imageHTML + imageHTML;
             rightTrack.innerHTML = imageHTML + imageHTML;
         }
@@ -465,7 +416,7 @@
             }, 400);
         }
 
-        // Handles the top navigation buttons
+        // Navigation tab handler
         function switchNav(targetId, btnId) {
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(btnId).classList.add('active');
