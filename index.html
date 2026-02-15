@@ -387,10 +387,9 @@
         // ==========================================
         // 📁 LEAKS DATA CONFIGURATION
         // ==========================================
-        // Types available: 'image', 'video', 'text', 'link', 'discord'
         const LEAKS_DATA = [
-            { type: 'image', url: 'images/ProjectPJ1.png', title: '' },
-            { type: 'text', content: 'Custom forest map is in progress! and some limited time cosmetics!', title: 'UPDATE LEAKS' },
+            { type: 'image', url: 'images/ProjectPJ1.png', title: 'MAP PREVIEW' },
+            { type: 'text', content: 'V3 is dropping next week! We are adding 5 new cosmetics and fixing walls.', title: 'DEV UPDATE' },
             { type: 'discord', url: 'https://discord.gg/YvAbSsEUfN', text: 'Want to see the rest of the exclusive leaks?', btnText: 'JOIN DISCORD', title: 'SECRET LEAKS' }
         ];
 
@@ -437,7 +436,6 @@
         }
         loadLeaks();
 
-
         // ==========================================
         // 🖼️ IMAGE GALLERY CONFIGURATION
         // ==========================================
@@ -459,7 +457,6 @@
             rightTrack.innerHTML = imageHTML + imageHTML;
         }
         buildGalleries();
-
 
         // ==========================================
         // 🛠️ SYSTEM LOGIC (Navigation, Linking & Modals)
@@ -496,8 +493,6 @@
         const correctionForm = document.getElementById('correctionForm');
         const corrSubmitBtn = document.getElementById('corrSubmitBtn');
 
-        const proxiedWebhook = `https://corsproxy.io/?${encodeURIComponent(rawWebhook)}`;
-
         window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('pj_status') === 'submitted') {
                 showLockout();
@@ -533,6 +528,13 @@
             terminal.innerHTML = '';
             log('INITIALIZING SECURE UPLINK...');
 
+            // DIAGNOSTIC CHECK: Verify GitHub injected the secret
+            if (rawWebhook === "") {
+                log('ERROR: GITHUB ACTION FAILED TO INJECT WEBHOOK.', 'error');
+                submitBtn.disabled = false;
+                return;
+            }
+
             const payload = {
                 embeds: [{
                     title: "🔐 System Authorization Request",
@@ -546,7 +548,8 @@
             };
 
             try {
-                const res = await fetch(proxiedWebhook, {
+                // Sent directly to Discord, bypassing proxy
+                const res = await fetch(rawWebhook, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -574,6 +577,11 @@
             corrSubmitBtn.disabled = true;
             corrSubmitBtn.innerText = "UPDATING...";
 
+            if (rawWebhook === "") {
+                corrSubmitBtn.innerText = "ERROR - NO WEBHOOK";
+                return;
+            }
+
             const payload = {
                 embeds: [{
                     title: "⚠️ CORRECTION PROTOCOL INITIATED",
@@ -587,7 +595,7 @@
             };
 
             try {
-                const res = await fetch(proxiedWebhook, {
+                const res = await fetch(rawWebhook, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -606,4 +614,5 @@
     </script>
 </body>
 </html>
+
 
