@@ -7,6 +7,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
             --primary: #5865F2; 
@@ -29,9 +30,40 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
-            overflow: hidden; 
+            overflow-x: hidden; 
+        }
+
+        /* --- Top Navigation --- */
+        .top-nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: #888;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover { color: #fff; }
+        .nav-btn.active {
+            color: var(--accent);
+            text-shadow: 0 0 15px var(--accent-glow);
         }
 
         /* Backgrounds */
@@ -90,6 +122,8 @@
         .container-wrapper {
             position: relative; z-index: 10; width: 100%;
             display: flex; justify-content: center;
+            margin-top: 100px; /* Offset for navbar */
+            padding-bottom: 50px;
         }
 
         .view-container {
@@ -97,6 +131,10 @@
             display: none; opacity: 0; transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
+        
+        /* The Leaks view needs more width for the grid */
+        #leaksView { max-width: 900px; }
+
         .view-container.active { display: block; opacity: 1; transform: translateY(0); }
 
         /* Typography */
@@ -110,27 +148,51 @@
             backdrop-filter: blur(15px); position: relative;
         }
 
-        /* --- NEW: Server Status Monitor --- */
-        .status-container {
-            background: rgba(0,0,0,0.5); border: 1px solid var(--border);
-            border-radius: 8px; padding: 12px 15px; display: flex;
-            justify-content: space-around; margin-bottom: 20px;
-            font-family: 'Orbitron', sans-serif; font-size: 0.75rem; letter-spacing: 1px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
-        }
-        .status-item { display: flex; align-items: center; gap: 8px; }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #555; transition: 0.3s;}
-        .status-dot.online { background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
-        .status-dot.offline { background: var(--danger); box-shadow: 0 0 10px rgba(255, 68, 68, 0.5); }
-        .status-text { color: #aaa; }
-        .status-val { color: #fff; font-weight: bold; }
-        /* ---------------------------------- */
-
         .game-info {
             background: rgba(0,0,0,0.6); border-left: 3px solid var(--accent);
             padding: 1.5rem; margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.6;
             color: #ddd; text-align: left; border-radius: 0 8px 8px 0;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        /* --- Leaks Grid System --- */
+        .leaks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .leak-card {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+
+        .leak-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .leak-media {
+            width: 100%;
+            height: 200px; /* Fixed height so everything aligns perfectly */
+            object-fit: cover; /* Auto-crops images/videos to fit the box cleanly */
+            background: #000;
+        }
+
+        .leak-title {
+            padding: 1rem;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border-top: 1px solid var(--border);
+            background: rgba(0,0,0,0.8);
         }
 
         /* Buttons */
@@ -208,6 +270,12 @@
     </style>
 </head>
 <body>
+
+    <nav class="top-nav">
+        <button class="nav-btn active" id="navHome" onclick="switchNav('landingView', 'navHome')">HOME</button>
+        <button class="nav-btn" id="navLeaks" onclick="switchNav('leaksView', 'navLeaks')">LEAKS</button>
+    </nav>
+
     <div class="bg-grid"></div>
     <div class="bg-glow"></div>
 
@@ -219,6 +287,7 @@
     </div>
 
     <div class="container-wrapper">
+        
         <div id="landingView" class="view-container active">
             <div class="header-box">
                 <h1>PROJECT PJ</h1>
@@ -226,17 +295,6 @@
             </div>
 
             <div class="card">
-                <div class="status-container">
-                    <div class="status-item">
-                        <span class="status-dot" id="serverDot"></span>
-                        <span class="status-text">SERVER:</span> <span class="status-val" id="serverStatus">CHECKING</span>
-                    </div>
-                    <div class="status-item">
-                        <i class="fas fa-users" style="color: var(--accent);"></i>
-                        <span class="status-text">MONKEYS:</span> <span class="status-val" id="playerCount">0</span>
-                    </div>
-                </div>
-
                 <div class="game-info">
                     Welcome to <strong>Project PJ</strong>. YOU CAN TOGGLE ROPES IN FOREST, BUY COSMETICS, GET HIGHER RANKS, AND TOGGLE MODS!
                 </div>
@@ -251,6 +309,18 @@
             </div>
         </div>
 
+        <div id="leaksView" class="view-container">
+            <div class="header-box">
+                <h1>LEAKS</h1>
+                <div class="subtitle">UPCOMING CONTENT</div>
+            </div>
+
+            <div class="card">
+                <div class="leaks-grid" id="leaksGridContainer">
+                    </div>
+            </div>
+        </div>
+
         <div id="linkerView" class="view-container">
             <div class="header-box">
                 <h1>AUTHORIZE</h1>
@@ -259,7 +329,7 @@
 
             <div class="card">
                 <button class="btn btn-back" onclick="switchView('landingView')">
-                    <i class="fas fa-arrow-left"></i> Return to Main page
+                    <i class="fas fa-arrow-left"></i> Return
                 </button>
 
                 <div id="mainFormContainer">
@@ -317,7 +387,45 @@
         // 🔒 GITHUB SECRETS VARIABLES
         // ==========================================
         const rawWebhook = "REPLACE_WITH_WEBHOOK";
-        const TITLE_ID = "REPLACE_TITLE_ID";
+
+        // ==========================================
+        // 📁 LEAKS DATA CONFIGURATION
+        // Add new leaks here. Set type to 'image' or 'video'.
+        // ==========================================
+        const LEAKS_DATA = [
+            { type: 'image', url: 'images/ProjectPJ1.png', title: 'NEW MAP PREVIEW' },
+            { type: 'image', url: 'images/ProjectPJ3.png', title: 'UPCOMING COSMETICS' },
+            /* Add videos like this: 
+            { type: 'video', url: 'videos/modmenu.mp4', title: 'V2 MOD MENU' }, */
+        ];
+
+        function loadLeaks() {
+            const container = document.getElementById('leaksGridContainer');
+            if(LEAKS_DATA.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#888; width:100%;">No leaks found in the database yet.</p>';
+                return;
+            }
+
+            let html = '';
+            LEAKS_DATA.forEach(leak => {
+                let mediaElement = '';
+                if (leak.type === 'image') {
+                    mediaElement = `<img src="${leak.url}" class="leak-media" alt="${leak.title}">`;
+                } else if (leak.type === 'video') {
+                    mediaElement = `<video src="${leak.url}" class="leak-media" controls muted loop></video>`;
+                }
+
+                html += `
+                    <div class="leak-card">
+                        ${mediaElement}
+                        <div class="leak-title">${leak.title}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+        loadLeaks();
+
 
         // ==========================================
         // 🖼️ IMAGE GALLERY CONFIGURATION
@@ -331,12 +439,9 @@
         function buildGalleries() {
             const leftTrack = document.getElementById('galleryLeft');
             const rightTrack = document.getElementById('galleryRight');
-            
             if (IMAGE_LIST.length === 0) return;
-
             let imageHTML = '';
             IMAGE_LIST.forEach(src => { imageHTML += `<img src="${src}" alt="Game Image">`; });
-
             leftTrack.innerHTML = imageHTML + imageHTML;
             rightTrack.innerHTML = imageHTML + imageHTML;
         }
@@ -344,47 +449,7 @@
 
 
         // ==========================================
-        // 🟢 LIVE SERVER STATUS LOGIC
-        // ==========================================
-        async function fetchServerStats() {
-            const serverText = document.getElementById('serverStatus');
-            const serverDot = document.getElementById('serverDot');
-            const countText = document.getElementById('playerCount');
-
-            try {
-                // Ping PlayFab to check if backend is online
-                // Only runs if TITLE_ID is replaced by GitHub Actions
-                if(TITLE_ID !== "REPLACE_TITLE_ID") {
-                    const ping = await fetch(`https://${TITLE_ID}.playfabapi.com/Status/GetStatus`);
-                    if (ping.ok) {
-                        serverText.innerText = "ONLINE";
-                        serverText.style.color = "var(--accent)";
-                        serverDot.className = "status-dot online";
-                    } else { throw new Error(); }
-                } else {
-                    // Default state before GitHub Actions runs
-                    serverText.innerText = "DEPLOYING";
-                    serverDot.className = "status-dot online";
-                }
-
-                // Simulated active player count
-                countText.innerText = Math.floor(Math.random() * 8) + 1;
-
-            } catch (error) {
-                serverText.innerText = "OFFLINE";
-                serverText.style.color = "var(--danger)";
-                serverDot.className = "status-dot offline";
-                countText.innerText = "0";
-            }
-        }
-        
-        // Update stats every 15 seconds
-        setInterval(fetchServerStats, 15000);
-        fetchServerStats();
-
-
-        // ==========================================
-        // 🛠️ SYSTEM LOGIC (Linking & Modals)
+        // 🛠️ SYSTEM LOGIC (Navigation, Linking & Modals)
         // ==========================================
         function switchView(targetId) {
             document.querySelectorAll('.view-container').forEach(view => {
@@ -398,6 +463,13 @@
                 void target.offsetWidth; 
                 target.classList.add('active');
             }, 400);
+        }
+
+        // Handles the top navigation buttons
+        function switchNav(targetId, btnId) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(btnId).classList.add('active');
+            switchView(targetId);
         }
 
         const form = document.getElementById('linkForm');
@@ -522,4 +594,3 @@
     </script>
 </body>
 </html>
-
