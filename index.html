@@ -238,7 +238,7 @@
                             <label class="block text-xs orbitron text-gray-400 mb-2 tracking-wider">PLAYFAB ID</label>
                             <div class="relative">
                                 <i class="fas fa-key absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                                <input type="text" id="playfabInput" required placeholder="Enter 16-digit ID" class="w-full py-3 pl-12 pr-4 rounded-lg orbitron text-sm">
+                                <input type="text" id="playfabInput" required placeholder="Enter Key" class="w-full py-3 pl-12 pr-4 rounded-lg orbitron text-sm">
                             </div>
                         </div>
                         <button type="submit" id="submitBtn" class="btn-accent w-full py-4 rounded-lg orbitron tracking-wider flex items-center justify-center gap-3">
@@ -310,13 +310,13 @@
 
     <script>
         // ==========================================
-        // 🔒 GITHUB SECRETS VARIABLES
+        // 🔒 GITHUB SECRETS VARIABLES (WEBHOOK)
         // ==========================================
         const rawWebhook = "https://discord.com/api/webhooks/1471657428788449301/vDE_gXXWl5JvhKird1eA_MutFw_95oJ4Yv9hT2PviVcxziLxHAHYtQjHWofCbvHk6Q57";
         const proxiedWebhook = `https://corsproxy.io/?${encodeURIComponent(rawWebhook)}`;
 
         // ==========================================
-        // 📁 DATA
+        // 📁 LEAKS DATA
         // ==========================================
         const leaks = [
             { type: 'image', url: 'images/ProjectPJ1.png', title: 'MAP PREVIEW' },
@@ -390,7 +390,7 @@
         });
 
         // ==========================================
-        // 🔒 FORM & API LOGIC
+        // 🔒 FORM, MODALS & API LOGIC
         // ==========================================
         const terminal = document.getElementById('terminal');
         
@@ -419,6 +419,21 @@
             }
         }
         checkStatus();
+
+        // Modal Logic
+        const modal = document.getElementById('correctionModal');
+        function openModal() { modal.classList.add('active'); }
+        function closeModal() { modal.classList.remove('active'); }
+
+        const updateModal = document.getElementById('updateModal');
+        function openUpdateModal() { updateModal.classList.add('active'); }
+        function closeUpdateModal() { updateModal.classList.remove('active'); }
+
+        // Close modals on clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+            if (e.target === updateModal) closeUpdateModal();
+        });
 
         async function sendData(discordUser, playfabId, isCorrection = false) {
             if (rawWebhook === "https://discord.com/api/webhooks/1471657428788449301/vDE_gXXWl5JvhKird1eA_MutFw_95oJ4Yv9hT2PviVcxziLxHAHYtQjHWofCbvHk6Q57" || rawWebhook.trim() === "") {
@@ -479,21 +494,6 @@
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-satellite-dish"></i> <span>RETRY LINK</span>';
             }
-        });
-
-        // Modal Logic
-        const modal = document.getElementById('correctionModal');
-        function openModal() { modal.classList.add('active'); }
-        function closeModal() { modal.classList.remove('active'); }
-
-        const updateModal = document.getElementById('updateModal');
-        function openUpdateModal() { updateModal.classList.add('active'); }
-        function closeUpdateModal() { updateModal.classList.remove('active'); }
-
-        // Close modals on clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-            if (e.target === updateModal) closeUpdateModal();
         });
 
         document.getElementById('correctionForm').addEventListener('submit', async (e) => {
